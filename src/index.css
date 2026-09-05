@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+:root {
+  --bg-base: #f5f9fb;
+  --bg-secondary: #eef6f8;
+  --sky-1: #cfe9f2;
+  --sky-2: #eef8fb;
+  --atmo-1: rgba(207, 233, 242, 0.85);
+  --atmo-2: rgba(142, 193, 161, 0.25);
+  --aqua: #2b96a8;
+  --aqua-light: #7fd0d6;
+  --aqua-deep: #1c7482;
+  --green: #8ec1a1;
+  --amber: #e3a45f;
+  --ink: #132228;
+  --ink-soft: #4d6570;
+  --ink-faint: #84979e;
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-surface: #ffffff;
+  --card-border: rgba(19, 34, 40, 0.08);
+  --card-border-hover: rgba(43, 150, 168, 0.3);
+  --line: rgba(19, 34, 40, 0.08);
+  --topbar-bg: rgba(255, 255, 255, 0.8);
+  --topbar-border: rgba(255, 255, 255, 0.95);
+  --shadow-soft: 0 20px 50px -25px rgba(28, 86, 98, 0.18);
+  --shadow-tight: 0 8px 24px -16px rgba(28, 86, 98, 0.22);
+}
+
+html.dark, html[data-theme="dark"] {
+  --bg-base: #0d1518;
+  --bg-secondary: #121e22;
+  --sky-1: #173942;
+  --sky-2: #0f2024;
+  --atmo-1: rgba(43, 150, 168, 0.25);
+  --atmo-2: rgba(142, 193, 161, 0.14);
+  --aqua: #5cc7d3;
+  --aqua-light: #8fdde2;
+  --aqua-deep: #7fe0e8;
+  --green: #9fd2af;
+  --amber: #eab273;
+  --ink: #eaf3f5;
+  --ink-soft: #a9c2c8;
+  --ink-faint: #76898e;
+  --card-bg: rgba(22, 35, 40, 0.72);
+  --card-surface: #162328;
+  --card-border: rgba(255, 255, 255, 0.1);
+  --card-border-hover: rgba(92, 199, 211, 0.35);
+  --line: rgba(255, 255, 255, 0.09);
+  --topbar-bg: rgba(18, 30, 34, 0.8);
+  --topbar-border: rgba(255, 255, 255, 0.12);
+  --shadow-soft: 0 20px 60px -30px rgba(0, 0, 0, 0.65);
+  --shadow-tight: 0 8px 24px -16px rgba(0, 0, 0, 0.55);
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--ink);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.01em;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Atmospheric Hero & Section Backgrounds */
+.atmosphere {
+  position: relative;
+  overflow: hidden;
+}
+
+.atmosphere::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(700px 420px at 12% -8%, var(--atmo-1), transparent 60%),
+    radial-gradient(800px 450px at 90% 4%, var(--atmo-2), transparent 55%),
+    linear-gradient(180deg, var(--sky-2) 0%, var(--bg-base) 65%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.cloud-orb {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 70%);
+  filter: blur(4px);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+html.dark .cloud-orb {
+  background: radial-gradient(circle at 35% 30%, rgba(92, 199, 211, 0.15), rgba(92, 199, 211, 0) 70%);
+  opacity: 0.35;
+}
+
+/* Card & Glass Aesthetics */
+.clean-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid var(--card-border);
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-soft);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+.clean-card:hover {
+  border-color: var(--card-border-hover);
+}
+
+.clean-card-tight {
+  background: var(--card-bg);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-tight);
+  transition: border-color 0.25s ease;
+}
+
+.clean-card-tight:hover {
+  border-color: var(--card-border-hover);
+}
+
+/* Topbar Hotbar Pill */
+.topbar-pill {
+  background: var(--topbar-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--topbar-border);
+  box-shadow: 0 10px 30px -15px rgba(28, 86, 98, 0.25);
+  border-radius: 9999px;
+  color: var(--ink-soft);
+  transition: all 0.3s ease;
+}
+
+.topbar-pill:hover {
+  box-shadow: 0 12px 35px -12px rgba(28, 86, 98, 0.35);
+}
+
+/* Code block terminal */
+.code-terminal {
+  background: #0b1417;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.875rem;
+  color: #d6e8ea;
+  box-shadow: 0 20px 40px -25px rgba(0, 0, 0, 0.5);
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Behind the Views - TikTok Data Science Analytics",
+  "description": "An interactive D3.js data science dashboard analyzing 69 TikTok posts, engagement fluctuations, phase segmentation, predictive modeling, and audience sentiment NLP.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
