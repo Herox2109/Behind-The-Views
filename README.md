@@ -13,28 +13,19 @@ An independent, reproducible data-science project analyzing 11 months of TikTok 
 1. **Empirical Grounding**: Transform a personal TikTok privacy JSON export (`user_data_tiktok.json`) into an automated, verifiable data science pipeline.
 2. **Power-Law Analysis**: Investigate the concentration of engagement in the two most-liked videos.
 3. **Hiatus Dynamics**: Analyze the statistical repercussions of a 73-day break between February 18 and April 30, 2026.
-4. **Predictive Modeling**: Train, validate, and evaluate an interpretable machine learning model (L2 Logistic Classifier & Random Forest) to predict above-median engagement from pre-publication temporal features.
+4. **Modeling Demonstration**: Show how explicit, manually chosen assumptions change an illustrative logistic score. Training and evaluation remain future work.
 5. **Audience Sentiment & NLP**: Parse public comments from viral videos to cluster viewer feedback and technical tutorial inquiries.
 
 ---
 
-## Data Pipeline Architecture
+## Implemented data flow
 
-```
-Raw TikTok JSON (user_data_tiktok.json)
-        ↓
-Python / Pandas data-processing pipeline (load_and_clean.py)
-        ↓
-Cleaned dataset & time-series segmentation (segment_phases.py)
-        ↓
-Statistical analysis & robust metric calculations (robust_stats.py)
-        ↓
-Predictive machine learning model & validation (train_model.py)
-        ↓
-Audience sentiment NLP classification (nlp_sentiment.py)
-        ↓
-Interactive D3.js visualization web application (React + Tailwind CSS)
-```
+`data/posts.json` is read by the React analytics module, Express API and FastAPI
+service. `scripts/update-readme.ts` generates the statistics below. The browser
+also provides an illustrative score and a whole-word keyword sentiment demo.
+
+The methodology panel contains labeled educational examples, not an executed
+end-to-end training pipeline. No raw privacy export is published here.
 
 ---
 
@@ -60,16 +51,23 @@ directory alongside `backend/`.
 
 ---
 
-## Machine Learning Model Evaluation
+## Modeling status: illustrative, not evaluated
 
-- **Task**: Binary classification — predicting whether an upload surpasses the channel median (likes at or above the dataset median) based on `gap_days`, upload hour, day of week, and channel momentum.
-- **Algorithm**: L2-Regularized Logistic Regression (chosen for small-sample stability on $N=69$ and interpretable odds ratios).
-- **Results**:
-  - **Accuracy**: 78.6% on stratified test split (vs. 50.0% dummy baseline)
-  - **Precision**: 75.0%
-  - **Recall**: 85.7%
-  - **F1-Score**: 0.80
-  - **ROC-AUC**: 0.82
+The interactive score uses manually selected coefficients and a logistic transform.
+It is a 0–100 demonstration score, not a calibrated probability, a trained model,
+or a validated forecast of likes, plays or shares. The interface shows each rule's
+contribution so the calculation can be inspected.
+
+No reproducible training run, held-out predictions or saved model artifact is
+provided. Previously hard-coded accuracy, precision, recall, F1, ROC-AUC and
+confusion-matrix figures have been removed rather than presented as measurements.
+Future evaluation should use training-only preprocessing and thresholds, a
+chronological holdout, a baseline, and published predictions with uncertainty.
+
+The simulator covers the canonical dataset's publication months (August 2025 to
+July 2026). Its observed curve accumulates snapshot likes by publication month;
+it is not a historical record of when those likes arrived. The hypothetical
+curve is an explicitly assumed scenario, not a model forecast.
 
 ---
 

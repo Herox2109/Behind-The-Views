@@ -58,7 +58,7 @@ export const ReadmeModal: React.FC<ReadmeModalProps> = ({ isOpen, onClose }) => 
             <ul className="list-disc list-inside space-y-1">
               <li><b>Demystify Social Media Reach:</b> Expose how two viral outliers accounted for {`${CHANNEL_METRICS.top2Percentage}%`} of lifetime likes.</li>
               <li><b>Measure Cadence Dynamics:</b> Analyze the statistical impact of an extended 73-day hiatus.</li>
-              <li><b>Build Predictive Models:</b> Train and evaluate machine learning classifiers (Logistic Regression, Random Forest) on early release signals.</li>
+              <li><b>Explore Modeling Assumptions:</b> Inspect a manual logistic score; no trained model or validated performance is claimed.</li>
               <li><b>Analyze Audience Sentiment:</b> Use NLP and TF-IDF clustering to parse viewer questions and feedback on top viral edits.</li>
             </ul>
           </div>
@@ -92,7 +92,7 @@ Python Data Cleaning & Extraction (load_and_clean.py)
         ↓
 Time-Series Phase Segmentation (segment_phases.py)
         ↓
-Predictive Modeling & Scikit-Learn Validation (train_model.py)
+Illustrative manual score (src/lib/illustrativeModel.ts; not evaluated)
         ↓
 Audience NLP Sentiment Analysis (nlp_sentiment.py)
         ↓

@@ -1,3 +1,4 @@
+import { monthlyTimeline } from '../lib/monthlyTimeline';
 import React, { useState, useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { X } from 'lucide-react';
@@ -55,17 +56,10 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({ isOpen, on
 
     svg.attr('viewBox', `0 0 ${width} ${height}`);
 
-    const monthDates: string[] = [];
-    const cursor = new Date(RAW_POSTS[0].date.slice(0, 7) + '-01T00:00:00Z');
-    const lastMonth = RAW_POSTS[RAW_POSTS.length - 1].date.slice(0, 7);
-    while (cursor.toISOString().slice(0, 7) <= lastMonth) {
-      monthDates.push(cursor.toISOString().slice(0, 7));
-      cursor.setUTCMonth(cursor.getUTCMonth() + 1);
-    }
-    const months = monthDates;
-    const actualCumulative = monthDates.map(month => RAW_POSTS
-      .filter(post => post.date.slice(0, 7) <= month)
-      .reduce((sum, post) => sum + post.likes, 0));
+    const timeline = monthlyTimeline(RAW_POSTS);
+    const monthDates = timeline.map(point => point.month);
+    const months = timeline.map(point => point.label);
+    const actualCumulative = timeline.map(point => point.cumulativeLikes);
     const breakStart = Date.parse('2026-02-17T00:00:00Z');
     const breakEnd = Date.parse('2026-05-01T00:00:00Z');
     const simCumulative = actualCumulative.map((total, index) => {
@@ -102,7 +96,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({ isOpen, on
     // X Axis
     svg.append('g')
       .attr('transform', `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(xScale).ticks(12).tickFormat((_, i) => months[i]).tickSize(0).tickPadding(8))
+      .call(d3.axisBottom(xScale).tickValues(months.map((_, i) => i)).tickFormat(value => months[Number(value)]).tickSize(0).tickPadding(8))
       .call(g => g.select('.domain').remove())
       .attr('class', 'text-ink-faint text-[11px] font-mono');
 
@@ -221,7 +215,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({ isOpen, on
         <div className="p-4 rounded-xl clean-card-tight mb-6">
           <div className="flex items-center justify-between mb-3 text-xs">
             <span className="font-mono text-[11px] font-bold text-ink uppercase">
-              Actual vs Counterfactual Lifetime Likes
+              Observed vs Illustrative Cumulative Likes
             </span>
             <div className="flex items-center gap-4 text-xs font-mono">
               <span className="text-teal-700 dark:text-teal-400">Actual ({CHANNEL_METRICS.totalLikes.toLocaleString()})</span>
@@ -230,6 +224,8 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({ isOpen, on
           </div>
           <svg ref={svgRef} className="w-full h-auto select-none" />
         </div>
+
+        <p className="text-xs text-ink-soft mb-6">Observed points sum each post’s snapshot likes by publication month; they are not historical monthly like counts. The dashed line distributes hypothetical extra likes across the break, not a validated forecast.</p>
 
         {/* Result Metrics */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 text-center font-mono">
