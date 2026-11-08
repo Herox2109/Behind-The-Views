@@ -86,3 +86,23 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 - **Creator / Analyst**: Behruzbek Shodmonov
 - **GitHub**: [https://github.com/Herox2109](https://github.com/Herox2109)
 - **TikTok**: [https://www.tiktok.com/@herox.cc](https://www.tiktok.com/@herox.cc?_r=1&_t=ZP-99Tn9fZhK9e)
+
+
+## API input limits
+
+`POST /api/bespoke-eval` accepts an `expression` containing only numeric literals,
+`post.likes`, `post.index`, `post.logLikes`, parentheses, and `+ - * / %`.
+Example: `post.likes / (post.index + 1)`. JavaScript functions, property traversal,
+and statements are not supported. Expressions are limited to 256 characters,
+128 tokens and 32 nesting levels; non-finite results return HTTP 400.
+
+`POST /api/simulate` requires a JSON object. Optional fields:
+
+- `postingFrequencyPerWeek`: finite number from 0.2 to 7 (default 1.7).
+- `baselineMedian`: finite number from 10 to 1000 (default 145).
+- `includeViralSpike`: boolean (default false).
+
+Invalid values return HTTP 400 rather than being coerced or silently clamped.
+Generated simulations have an additional hard ceiling of 100 posts.
+
+Run security regression tests with `npm test`; run type checks with `npm run lint`.
