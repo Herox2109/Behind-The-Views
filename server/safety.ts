@@ -1,3 +1,4 @@
+import { BREAK_STATS } from '../src/data/postsData';
 // A deliberately small arithmetic language, never JavaScript evaluation.
 // Supports numeric literals, post.likes/index/logLikes, + - * / % and parentheses.
 export function compileExpression(expression: unknown): (post: Record<string, unknown>) => number {
@@ -84,8 +85,9 @@ export function validateSimulation(body: unknown) {
     return value;
   }
   const postingFrequencyPerWeek = numeric('postingFrequencyPerWeek', 1.7, 0.2, 7);
-  const baselineMedian = numeric('baselineMedian', 145, 10, 1000);
+  const baselineMedian = numeric('baselineMedian', BREAK_STATS.beforeMedianLikesExcludingViral, 10, 1000);
   const includeViralSpike = input.includeViralSpike === undefined ? false : input.includeViralSpike;
   if (typeof includeViralSpike !== 'boolean') throw new Error('includeViralSpike must be a boolean');
   return { postingFrequencyPerWeek, baselineMedian, includeViralSpike };
 }
+

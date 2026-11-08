@@ -1,3 +1,4 @@
+import { CHANNEL_METRICS } from '../data/postsData';
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { HISTOGRAM_BINS, ENRICHED_POSTS } from '../data/postsData';
@@ -209,7 +210,7 @@ export const DistributionAndGapsD3: React.FC = () => {
               <svg ref={histSvgRef} className="w-full h-auto" />
             </div>
             <div className="mt-4 pt-4 border-t border-black/5 dark:border-white/5 text-xs text-ink-faint">
-              Median: 149 likes. Mean: 4,257 — pulled up entirely by two outliers.
+              Median: {CHANNEL_METRICS.overallMedianLikes} likes. Mean: {CHANNEL_METRICS.overallMeanLikes.toLocaleString()} — pulled up entirely by two outliers.
             </div>
           </div>
 
@@ -245,3 +246,4 @@ export const DistributionAndGapsD3: React.FC = () => {
     </section>
   );
 };
+

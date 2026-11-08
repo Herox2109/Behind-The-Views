@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { X } from 'lucide-react';
-import { CHANNEL_METRICS } from '../data/postsData';
+import { CHANNEL_METRICS, BREAK_STATS, RAW_POSTS } from '../data/postsData';
 
 interface ScenarioSimulatorProps {
   isOpen: boolean;
@@ -11,7 +11,7 @@ interface ScenarioSimulatorProps {
 export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({ isOpen, onClose }) => {
   const [preventBreak, setPreventBreak] = useState<boolean>(true);
   const [targetCadence, setTargetCadence] = useState<number>(1.8); // posts per week
-  const [baselineMedian] = useState<number>(145);
+  const [baselineMedian] = useState<number>(BREAK_STATS.beforeMedianLikesExcludingViral);
   const [includeViralSpike, setIncludeViralSpike] = useState<boolean>(false);
   const svgRef = useRef<SVGSVGElement | null>(null);
 
@@ -55,16 +55,25 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({ isOpen, on
 
     svg.attr('viewBox', `0 0 ${width} ${height}`);
 
-    const months = ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May'];
-    const actualCumulative = [500, 2500, 99000, 102000, 273000, 279000, 285000, 291000, 292000, 292000, 292000, 293710];
-
-    const simCumulative = [...actualCumulative];
-    if (preventBreak) {
-      const monthlyAdd = simulationResult.syntheticLikes / 3;
-      simCumulative[9] += monthlyAdd * 0.4;
-      simCumulative[10] += monthlyAdd * 1.5;
-      simCumulative[11] += simulationResult.syntheticLikes;
+    const monthDates: string[] = [];
+    const cursor = new Date(RAW_POSTS[0].date.slice(0, 7) + '-01T00:00:00Z');
+    const lastMonth = RAW_POSTS[RAW_POSTS.length - 1].date.slice(0, 7);
+    while (cursor.toISOString().slice(0, 7) <= lastMonth) {
+      monthDates.push(cursor.toISOString().slice(0, 7));
+      cursor.setUTCMonth(cursor.getUTCMonth() + 1);
     }
+    const months = monthDates;
+    const actualCumulative = monthDates.map(month => RAW_POSTS
+      .filter(post => post.date.slice(0, 7) <= month)
+      .reduce((sum, post) => sum + post.likes, 0));
+    const breakStart = Date.parse('2026-02-17T00:00:00Z');
+    const breakEnd = Date.parse('2026-05-01T00:00:00Z');
+    const simCumulative = actualCumulative.map((total, index) => {
+      const end = new Date(monthDates[index] + '-01T00:00:00Z');
+      end.setUTCMonth(end.getUTCMonth() + 1);
+      const fraction = Math.max(0, Math.min(1, (end.getTime() - breakStart) / (breakEnd - breakStart)));
+      return total + (preventBreak ? Math.round(simulationResult.syntheticLikes * fraction) : 0);
+    });
 
     const xScale = d3.scaleLinear()
       .domain([0, months.length - 1])
@@ -215,7 +224,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({ isOpen, on
               Actual vs Counterfactual Lifetime Likes
             </span>
             <div className="flex items-center gap-4 text-xs font-mono">
-              <span className="text-teal-700 dark:text-teal-400">Actual (293.7k)</span>
+              <span className="text-teal-700 dark:text-teal-400">Actual ({CHANNEL_METRICS.totalLikes.toLocaleString()})</span>
               <span className="text-amber-600 dark:text-amber-400">Simulated ({Math.round(simulationResult.projectedTotal / 1000)}k)</span>
             </div>
           </div>
@@ -258,3 +267,4 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({ isOpen, on
     </div>
   );
 };
+

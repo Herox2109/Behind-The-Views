@@ -1,3 +1,4 @@
+import { BREAK_STATS } from '../data/postsData';
 import React from 'react';
 import { AlertCircle, HelpCircle, ShieldAlert, Sparkles } from 'lucide-react';
 
@@ -79,7 +80,7 @@ export const ConclusionSection: React.FC = () => {
               A lot of beginner data science projects take a clean, pre-packaged Kaggle dataset, run it through five standard models, and present neat conclusions. That is a great way to practice syntax. But it skips the hardest part of working with real data: figuring out what your dataset actually is, what it isn't, and what questions it has the right to answer.
             </p>
             <p>
-              This dataset came from a real account I built and posted to as a 17-year-old student creator. The numbers are real, the drop in posting is real, and the quiet period at the end is real. The most honest thing this project can do is report all three with equal care — acknowledging the 170k-like viral spike without pretending it was the norm, and measuring the 46-like median without inventing a story to explain it away.
+              This dataset came from a real account I built and posted to as a 17-year-old student creator. The numbers are real, the drop in posting is real, and the quiet period at the end is real. The most honest thing this project can do is report all three with equal care — acknowledging the 170k-like viral spike without pretending it was the norm, and measuring the {BREAK_STATS.afterMedianLikes}-like median without inventing a story to explain it away.
             </p>
           </div>
 
@@ -98,3 +99,4 @@ export const ConclusionSection: React.FC = () => {
     </>
   );
 };
+

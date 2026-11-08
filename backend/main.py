@@ -12,6 +12,8 @@ from typing import List, Optional, Dict, Any
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
+from pathlib import Path
+import json
 
 app = FastAPI(
     title="Behind the Views — TikTok Analytics API",
@@ -27,77 +29,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-RAW_POSTS = [
-    {"date": "2025-08-11", "likes": 13},
-    {"date": "2025-08-23", "likes": 124},
-    {"date": "2025-08-24", "likes": 244},
-    {"date": "2025-08-25", "likes": 50},
-    {"date": "2025-08-26", "likes": 96055},
-    {"date": "2025-08-28", "likes": 45},
-    {"date": "2025-08-29", "likes": 23},
-    {"date": "2025-08-30", "likes": 113},
-    {"date": "2025-08-31", "likes": 103},
-    {"date": "2025-09-01", "likes": 18},
-    {"date": "2025-09-02", "likes": 113},
-    {"date": "2025-09-03", "likes": 91},
-    {"date": "2025-09-04", "likes": 210},
-    {"date": "2025-09-05", "likes": 158},
-    {"date": "2025-09-06", "likes": 76},
-    {"date": "2025-09-07", "likes": 36},
-    {"date": "2025-09-21", "likes": 377},
-    {"date": "2025-09-22", "likes": 1305},
-    {"date": "2025-09-23", "likes": 206},
-    {"date": "2025-09-24", "likes": 1126},
-    {"date": "2025-09-25", "likes": 542},
-    {"date": "2025-09-26", "likes": 286},
-    {"date": "2025-09-27", "likes": 184},
-    {"date": "2025-09-30", "likes": 1112},
-    {"date": "2025-10-01", "likes": 170673},
-    {"date": "2025-10-02", "likes": 250},
-    {"date": "2025-10-04", "likes": 8282},
-    {"date": "2025-10-06", "likes": 310},
-    {"date": "2025-10-07", "likes": 164},
-    {"date": "2025-10-09", "likes": 1805},
-    {"date": "2025-10-13", "likes": 32},
-    {"date": "2025-10-16", "likes": 112},
-    {"date": "2025-10-18", "likes": 242},
-    {"date": "2025-10-21", "likes": 185},
-    {"date": "2025-10-23", "likes": 175},
-    {"date": "2025-10-25", "likes": 235},
-    {"date": "2025-10-28", "likes": 92},
-    {"date": "2025-10-30", "likes": 575},
-    {"date": "2025-11-03", "likes": 79},
-    {"date": "2025-11-04", "likes": 1671},
-    {"date": "2025-11-06", "likes": 101},
-    {"date": "2025-11-07", "likes": 149},
-    {"date": "2025-11-09", "likes": 103},
-    {"date": "2025-11-11", "likes": 117},
-    {"date": "2025-11-12", "likes": 161},
-    {"date": "2025-11-15", "likes": 107},
-    {"date": "2025-11-20", "likes": 154},
-    {"date": "2025-11-22", "likes": 171},
-    {"date": "2025-11-25", "likes": 275},
-    {"date": "2025-11-27", "likes": 141},
-    {"date": "2025-12-01", "likes": 174},
-    {"date": "2025-12-03", "likes": 70},
-    {"date": "2025-12-05", "likes": 118},
-    {"date": "2025-12-08", "likes": 94},
-    {"date": "2025-12-10", "likes": 149},
-    {"date": "2025-12-19", "likes": 142},
-    {"date": "2025-12-21", "likes": 690},
-    {"date": "2025-12-24", "likes": 152},
-    {"date": "2025-12-30", "likes": 138},
-    {"date": "2026-01-16", "likes": 107},
-    {"date": "2026-01-28", "likes": 1967},
-    {"date": "2026-02-03", "likes": 172},
-    {"date": "2026-02-10", "likes": 96},
-    {"date": "2026-02-17", "likes": 393},
-    {"date": "2026-05-01", "likes": 83},
-    {"date": "2026-06-14", "likes": 33},
-    {"date": "2026-06-24", "likes": 46},
-    {"date": "2026-07-11", "likes": 38},
-    {"date": "2026-07-12", "likes": 75}
-]
+RAW_POSTS = json.loads((Path(__file__).resolve().parents[1] / "data" / "posts.json").read_text(encoding="utf-8"))
+BEFORE = [p for p in RAW_POSTS if p["date"] < "2026-02-18" and p["likes"] <= 50000]
+AFTER = [p for p in RAW_POSTS if p["date"] >= "2026-05-01"]
+BEFORE_MEDIAN = float(np.median([p["likes"] for p in BEFORE]))
 
 PHASES = [
     {"id": "launch", "name": "The Launch", "color": "#7fd0d6", "start": "2025-08-11", "end": "2025-09-08"},
@@ -110,7 +45,7 @@ PHASES = [
 class SimulationRequest(BaseModel):
     prevent_break: bool = True
     posting_frequency_per_week: float = Field(default=1.7, ge=0.2, le=7.0)
-    baseline_median_likes: float = Field(default=145.0, ge=10.0, le=1000.0)
+    baseline_median_likes: float = Field(default=BEFORE_MEDIAN, ge=10.0, le=1000.0)
     viral_chance: float = Field(default=0.03, ge=0.0, le=0.2)
 
 @app.get("/")
@@ -164,7 +99,7 @@ def get_metrics():
     likes = [p["likes"] for p in RAW_POSTS]
     med = float(np.median(likes))
     mean = float(np.mean(likes))
-    top2_sum = 96055 + 170673
+    top2_sum = sum(sorted(likes, reverse=True)[:2])
     total_likes = sum(likes)
     
     return {
@@ -174,9 +109,9 @@ def get_metrics():
         "mean_likes": round(mean, 1),
         "top2_share": round((top2_sum / total_likes) * 100, 2),
         "break_duration_days": 73,
-        "before_break_median_ex_viral": 145,
-        "after_break_median": 46,
-        "scheduled_time_pct": 70.0
+        "before_break_median_ex_viral": BEFORE_MEDIAN,
+        "after_break_median": float(np.median([p["likes"] for p in AFTER])),
+        "scheduled_time_pct": round(100 * sum("09:35:00" <= p["createTime"][11:19] <= "10:05:00" for p in RAW_POSTS) / len(RAW_POSTS), 1)
     }
 
 @app.post("/api/simulate")
@@ -200,7 +135,7 @@ def simulate_channel(req: SimulationRequest):
             simulated_likes[i] = np.random.randint(20000, 120000)
             
     simulated_total = int(np.sum(simulated_likes))
-    observed_total = 293708
+    observed_total = sum(p["likes"] for p in RAW_POSTS)
     projected_total = observed_total + simulated_total
     
     return {
@@ -213,3 +148,4 @@ def simulate_channel(req: SimulationRequest):
             for i, l in enumerate(simulated_likes)
         ]
     }
+

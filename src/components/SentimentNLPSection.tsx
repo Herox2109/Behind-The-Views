@@ -1,3 +1,4 @@
+import { hasKeyword } from '../lib/keywords';
 import React, { useState } from 'react';
 import { Sparkles, ThumbsUp, ThumbsDown, HelpCircle, Music, AlertCircle, CheckCircle2, MessageCircle } from 'lucide-react';
 
@@ -104,12 +105,12 @@ export const SentimentNLPSection: React.FC = () => {
     const inquiryIndicators = ['?', 'what', 'how', 'where', 'who', 'which', 'can you', 'could you', 'please'];
 
     // Keyword extraction
-    const matchedNeg = strongNegatives.filter(w => lower.includes(w));
-    const matchedCrit = criticalFeedback.filter(w => lower.includes(w));
-    const matchedPos = strongPositives.filter(w => lower.includes(w));
-    const matchedMusic = musicKeywords.filter(w => lower.includes(w));
-    const matchedTech = technicalKeywords.filter(w => lower.includes(w));
-    const hasInquiry = inquiryIndicators.some(w => lower.includes(w));
+    const matchedNeg = strongNegatives.filter(w => hasKeyword(lower, w));
+    const matchedCrit = criticalFeedback.filter(w => hasKeyword(lower, w));
+    const matchedPos = strongPositives.filter(w => hasKeyword(lower, w));
+    const matchedMusic = musicKeywords.filter(w => hasKeyword(lower, w));
+    const matchedTech = technicalKeywords.filter(w => hasKeyword(lower, w));
+    const hasInquiry = inquiryIndicators.some(w => hasKeyword(lower, w));
 
     let sentiment: AnalyzedResult['sentiment'] = 'Neutral';
     let score = 0.0;
@@ -135,7 +136,7 @@ export const SentimentNLPSection: React.FC = () => {
       matchedKeywords = matchedCrit;
     }
     // 3. Audio & Music Inquiries
-    else if (matchedMusic.length > 0 && (hasInquiry || lower.includes('name') || lower.includes('id') || lower.includes('drop'))) {
+    else if (matchedMusic.length > 0 && (hasInquiry || hasKeyword(lower, 'name') || hasKeyword(lower, 'id') || hasKeyword(lower, 'drop'))) {
       sentiment = 'Inquiry';
       score = 0.18;
       category = 'Audio & Soundtrack Identification';
@@ -427,3 +428,4 @@ export const SentimentNLPSection: React.FC = () => {
     </section>
   );
 };
+

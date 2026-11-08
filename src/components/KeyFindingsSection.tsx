@@ -1,16 +1,18 @@
+import { BREAK_STATS } from '../data/postsData';
+import { CHANNEL_METRICS } from '../data/postsData';
 import React from 'react';
 
 export const KeyFindingsSection: React.FC = () => {
   const findings = [
     {
       index: "01",
-      stat: "90.8%",
+      stat: `${CHANNEL_METRICS.top2Percentage}%`,
       title: "Two videos carried the entire channel",
-      body: "Of 293,710 lifetime likes across 69 posts, 266,728 — 90.8% — came from just two videos, posted Aug 26 and Oct 1, 2025. Every other post combined accounts for the remaining 9.2%."
+      body: `Of ${CHANNEL_METRICS.totalLikes.toLocaleString()} likes across ${CHANNEL_METRICS.totalPosts} posts, ${CHANNEL_METRICS.top2LikesSum.toLocaleString()} (${CHANNEL_METRICS.top2Percentage}%) came from the top two videos.`
     },
     {
       index: "02",
-      stat: "268 → 46",
+      stat: `${BREAK_STATS.beforeMedianLikesExcludingViral} → ${BREAK_STATS.afterMedianLikes}`,
       title: "Typical reach fell in step with posting frequency",
       body: "Median likes (excluding the two viral posts) were highest during the two most active phases and lowest during the least active one. Frequency and typical performance moved together throughout the dataset.",
       hedge: "This is a correlation across four phases, not a controlled comparison — content, audio trends, and platform-side factors could have shifted at the same time."
@@ -19,20 +21,20 @@ export const KeyFindingsSection: React.FC = () => {
       index: "03",
       stat: "73 days",
       title: "The break is an outlier in its own right",
-      body: "The next-longest gap between posts anywhere in the dataset is 17 days. The 73-day break is more than four times longer than any other pause in eleven months of posting."
+      body: "The next-longest gap is 44 days. The 73-day break is the longest observed interval."
     },
     {
       index: "04",
       stat: "Lowest phase",
       title: "Reach hadn't recovered by the end of the dataset",
-      body: "The five posts after the break median 46 likes — lower than any other phase, including the very first week of posting before the account had any track record at all.",
+      body: `The ${BREAK_STATS.afterPostCount} posts after the break have a median of ${BREAK_STATS.afterMedianLikes} likes, lower than the other defined phases.`,
       hedge: "The data ends two months after the break; it can't say whether this is a lasting reset or simply a slow restart."
     },
     {
       index: "05",
-      stat: "70%",
-      title: "Posting was scheduled, not spontaneous",
-      body: "70% of all 69 posts went up between 9:35 and 10:05 AM. That's a routine, not a reaction to a trend or a sudden idea — which makes the changes in frequency more likely a change in effort or motivation than a change in access or opportunity."
+      stat: `${CHANNEL_METRICS.morningPostPercentage}%`,
+      title: "Uploads cluster in a recurring window",
+      body: `${CHANNEL_METRICS.morningPostPercentage}% of posts were published between 09:35 and 10:05 UTC. Timestamps show a recurring upload window, but do not establish that uploads were scheduled.`
     }
   ];
 
@@ -83,3 +85,4 @@ export const KeyFindingsSection: React.FC = () => {
     </section>
   );
 };
+

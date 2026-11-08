@@ -1,3 +1,4 @@
+import { CHANNEL_METRICS } from '../data/postsData';
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { ENRICHED_POSTS } from '../data/postsData';
@@ -88,9 +89,10 @@ export const PersonalContextSection: React.FC = () => {
           <span>·</span>
           <span><b>Cadence:</b> 09:35 – 10:05 AM routine</span>
           <span>·</span>
-          <span><b>Lifetime total:</b> 293,710 likes</span>
+          <span><b>Lifetime total:</b> {CHANNEL_METRICS.totalLikes.toLocaleString()} likes</span>
         </div>
       </div>
     </section>
   );
 };
+

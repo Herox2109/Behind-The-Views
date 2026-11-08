@@ -26,7 +26,7 @@ test('rejects non-finite arithmetic results', () => {
 });
 
 test('simulation defaults and boundaries are valid', () => {
-  assert.deepEqual(validateSimulation({}), { postingFrequencyPerWeek: 1.7, baselineMedian: 145, includeViralSpike: false });
+  assert.deepEqual(validateSimulation({}), { postingFrequencyPerWeek: 1.7, baselineMedian: 153, includeViralSpike: false });
   assert.equal(validateSimulation({ postingFrequencyPerWeek: 0.2, baselineMedian: 10 }).baselineMedian, 10);
   assert.equal(validateSimulation({ postingFrequencyPerWeek: 7, baselineMedian: 1000, includeViralSpike: true }).postingFrequencyPerWeek, 7);
 });
@@ -41,3 +41,4 @@ test('simulation rejects coercion, non-finite numbers and out-of-range values', 
   for (const value of ['false', 1, null]) assert.throws(() => validateSimulation({ includeViralSpike: value }));
   for (const value of [null, [], 'input', 12]) assert.throws(() => validateSimulation(value));
 });
+

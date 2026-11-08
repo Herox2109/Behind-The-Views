@@ -143,7 +143,7 @@ export const TheBreakSection: React.FC = () => {
 
           <div className="clean-card-tight p-6 text-center">
             <div className="text-2xl sm:text-3xl font-bold text-ink font-mono">
-              145 → 46
+              {`${BREAK_STATS.beforeMedianLikesExcludingViral} → ${BREAK_STATS.afterMedianLikes}`}
             </div>
             <div className="text-xs text-ink-soft mt-1.5">
               Median likes, before → after (excl. viral outliers)
@@ -168,3 +168,4 @@ export const TheBreakSection: React.FC = () => {
     </section>
   );
 };
+

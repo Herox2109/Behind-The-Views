@@ -1,3 +1,4 @@
+import { CHANNEL_METRICS } from '../data/postsData';
 import React, { useState } from 'react';
 import { Terminal, Copy, Check, FileCode, ExternalLink, Github, BookOpen, Share2 } from 'lucide-react';
 
@@ -69,8 +70,8 @@ X = pd.DataFrame({
     "is_pre_break": (df["Date"] < "2026-02-18").astype(int)
 })
 
-# Target: Above-Median engagement (Likes >= 149)
-y = (df["Likes"] >= 149).astype(int)
+# Target threshold computed from the dataset
+y = (df["Likes"] >= df["Likes"].median()).astype(int)
 
 # Model: L2-Regularized Logistic Regression for small-sample stability
 model = LogisticRegression(penalty="l2", C=1.0, random_state=42)
@@ -208,7 +209,7 @@ st.line_chart(df.set_index("Date")["Likes"])
             <div className="p-5 rounded-2xl clean-card-tight">
               <h4 className="text-sm font-bold text-ink mb-1.5">Solo Digital Creators</h4>
               <p className="text-xs text-ink-soft leading-relaxed">
-                Removes algorithm mystique. Demonstrates that power-law concentration is normal (2 videos = 90.8% of likes) and that taking extended breaks introduces a measurable cadence penalty requiring deliberate rebuilding.
+                Removes algorithm mystique. Demonstrates that power-law concentration is normal (2 videos = {`${CHANNEL_METRICS.top2Percentage}%`} of likes) and that taking extended breaks introduces a measurable cadence penalty requiring deliberate rebuilding.
               </p>
             </div>
             <div className="p-5 rounded-2xl clean-card-tight">
@@ -252,3 +253,4 @@ st.line_chart(df.set_index("Date")["Likes"])
     </section>
   );
 };
+

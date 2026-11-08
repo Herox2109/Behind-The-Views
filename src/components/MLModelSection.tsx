@@ -1,3 +1,4 @@
+import { CHANNEL_METRICS } from '../data/postsData';
 import React, { useState, useMemo } from 'react';
 import { Brain, CheckCircle2, TrendingUp, Sliders, AlertCircle, Sparkles, Award } from 'lucide-react';
 
@@ -41,7 +42,7 @@ export const MLModelSection: React.FC = () => {
       predictedBracket = "130 – 240 likes";
       estPlays = "1,800 – 3,400";
       estShares = "45 – 110";
-      advice = "Standard performance expected. Close to account median (149 likes). Cadence is healthy and within active reach.";
+      advice = `Standard performance expected. Close to account median (${CHANNEL_METRICS.overallMedianLikes} likes). Cadence is healthy and within active reach.`;
     } else if (prob >= 0.30) {
       predictedBracket = "60 – 120 likes";
       estPlays = "850 – 1,700";
@@ -71,7 +72,7 @@ export const MLModelSection: React.FC = () => {
             Machine Learning: Predicting Above-Median Performance
           </h2>
           <p className="text-base text-ink-soft leading-relaxed">
-            Building a verifiable, interpretable classification model to predict whether an upcoming video will surpass the channel's 149-like median based strictly on pre-publication temporal features.
+            Building a verifiable, interpretable classification model to predict whether an upcoming video will surpass the channel's {CHANNEL_METRICS.overallMedianLikes}-like median based strictly on pre-publication temporal features.
           </p>
         </div>
 
@@ -230,7 +231,7 @@ export const MLModelSection: React.FC = () => {
             </h3>
           </div>
           <p className="text-xs sm:text-sm text-ink-soft mb-6">
-            Adjust release parameters below to test the trained model's live probability of beating the 149-like channel median.
+            Adjust release parameters below to test the trained model's live probability of beating the {CHANNEL_METRICS.overallMedianLikes}-like channel median.
           </p>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -357,7 +358,7 @@ export const MLModelSection: React.FC = () => {
                     {prediction.probability}%
                   </span>
                   <span className="text-xs font-mono text-ink-soft">
-                    probability ≥ 149 likes
+                    probability ≥ {CHANNEL_METRICS.overallMedianLikes} likes
                   </span>
                 </div>
 
@@ -398,3 +399,4 @@ export const MLModelSection: React.FC = () => {
     </section>
   );
 };
+

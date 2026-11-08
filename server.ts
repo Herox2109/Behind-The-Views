@@ -3,77 +3,7 @@ import path from "path";
 import { compileExpression, validateSimulation, MAX_SIMULATED_POSTS } from "./server/safety";
 import { createServer as createViteServer } from "vite";
 
-const RAW_POSTS = [
-  {"date":"2025-08-11","likes":13},
-  {"date":"2025-08-23","likes":124},
-  {"date":"2025-08-24","likes":244},
-  {"date":"2025-08-25","likes":50},
-  {"date":"2025-08-26","likes":96055},
-  {"date":"2025-08-28","likes":45},
-  {"date":"2025-08-29","likes":23},
-  {"date":"2025-08-30","likes":113},
-  {"date":"2025-08-31","likes":103},
-  {"date":"2025-09-01","likes":18},
-  {"date":"2025-09-02","likes":113},
-  {"date":"2025-09-03","likes":91},
-  {"date":"2025-09-04","likes":210},
-  {"date":"2025-09-05","likes":158},
-  {"date":"2025-09-06","likes":76},
-  {"date":"2025-09-07","likes":36},
-  {"date":"2025-09-21","likes":377},
-  {"date":"2025-09-22","likes":1305},
-  {"date":"2025-09-23","likes":206},
-  {"date":"2025-09-24","likes":1126},
-  {"date":"2025-09-25","likes":542},
-  {"date":"2025-09-26","likes":286},
-  {"date":"2025-09-27","likes":184},
-  {"date":"2025-09-30","likes":1112},
-  {"date":"2025-10-01","likes":170673},
-  {"date":"2025-10-02","likes":250},
-  {"date":"2025-10-04","likes":8282},
-  {"date":"2025-10-06","likes":310},
-  {"date":"2025-10-07","likes":164},
-  {"date":"2025-10-09","likes":1805},
-  {"date":"2025-10-13","likes":32},
-  {"date":"2025-10-16","likes":112},
-  {"date":"2025-10-18","likes":242},
-  {"date":"2025-10-21","likes":185},
-  {"date":"2025-10-23","likes":175},
-  {"date":"2025-10-25","likes":235},
-  {"date":"2025-10-28","likes":92},
-  {"date":"2025-10-30","likes":575},
-  {"date":"2025-11-03","likes":79},
-  {"date":"2025-11-04","likes":1671},
-  {"date":"2025-11-06","likes":101},
-  {"date":"2025-11-07","likes":149},
-  {"date":"2025-11-09","likes":103},
-  {"date":"2025-11-11","likes":117},
-  {"date":"2025-11-12","likes":161},
-  {"date":"2025-11-15","likes":107},
-  {"date":"2025-11-20","likes":154},
-  {"date":"2025-11-22","likes":171},
-  {"date":"2025-11-25","likes":275},
-  {"date":"2025-11-27","likes":141},
-  {"date":"2025-12-01","likes":174},
-  {"date":"2025-12-03","likes":70},
-  {"date":"2025-12-05","likes":118},
-  {"date":"2025-12-08","likes":94},
-  {"date":"2025-12-10","likes":149},
-  {"date":"2025-12-19","likes":142},
-  {"date":"2025-12-21","likes":690},
-  {"date":"2025-12-24","likes":152},
-  {"date":"2025-12-30","likes":138},
-  {"date":"2026-01-16","likes":107},
-  {"date":"2026-01-28","likes":1967},
-  {"date":"2026-02-03","likes":172},
-  {"date":"2026-02-10","likes":96},
-  {"date":"2026-02-17","likes":393},
-  {"date":"2026-05-01","likes":83},
-  {"date":"2026-06-14","likes":33},
-  {"date":"2026-06-24","likes":46},
-  {"date":"2026-07-11","likes":38},
-  {"date":"2026-07-12","likes":75}
-];
+import { RAW_POSTS, CHANNEL_METRICS, BREAK_STATS, calculateMedian } from './src/data/postsData';
 
 const PHASES = [
   { id: "launch", name: "The Launch", color: "#7fd0d6", start: "2025-08-11", end: "2025-09-08" },
@@ -137,9 +67,9 @@ async function startServer() {
   app.get("/api/metrics", (_req, res) => {
     const likes = RAW_POSTS.map(p => p.likes).sort((a, b) => a - b);
     const totalLikes = likes.reduce((s, l) => s + l, 0);
-    const median = likes[Math.floor(likes.length / 2)];
+    const median = calculateMedian(likes);
     const mean = Math.round(totalLikes / likes.length);
-    const top2Sum = 96055 + 170673;
+    const top2Sum = CHANNEL_METRICS.top2LikesSum;
 
     res.json({
       totalPosts: RAW_POSTS.length,
@@ -149,9 +79,9 @@ async function startServer() {
       top2Sum,
       top2Percentage: +((top2Sum / totalLikes) * 100).toFixed(2),
       breakDurationDays: 73,
-      beforeBreakMedianExcludingViral: 145,
-      afterBreakMedian: 46,
-      morningScheduledPercentage: 70
+      beforeBreakMedianExcludingViral: BREAK_STATS.beforeMedianLikesExcludingViral,
+      afterBreakMedian: BREAK_STATS.afterMedianLikes,
+      morningScheduledPercentage: CHANNEL_METRICS.morningPostPercentage
     });
   });
 
@@ -182,7 +112,7 @@ async function startServer() {
       });
     }
 
-    const observedTotal = 293708;
+    const observedTotal = CHANNEL_METRICS.totalLikes;
     const projectedTotal = observedTotal + simulatedLikesSum;
 
     res.json({
@@ -239,4 +169,5 @@ async function startServer() {
 }
 
 startServer();
+
 

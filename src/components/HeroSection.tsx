@@ -104,7 +104,7 @@ export const HeroSection: React.FC = () => {
       });
 
     // Milestone labels on top outliers
-    nodes.filter(d => d.likes === 170673)
+    nodes.filter(d => d.likes === Math.max(...ENRICHED_POSTS.map(p => p.likes)))
       .append('text')
       .attr('y', -24)
       .attr('text-anchor', 'middle')
@@ -166,7 +166,7 @@ export const HeroSection: React.FC = () => {
                 <span>major break (73d)</span>
               </div>
               <div>
-                <strong className="block text-2xl font-semibold text-teal-700 dark:text-teal-400 font-mono">90.8%</strong>
+                <strong className="block text-2xl font-semibold text-teal-700 dark:text-teal-400 font-mono">{`${CHANNEL_METRICS.top2Percentage}%`}</strong>
                 <span>likes from top 2</span>
               </div>
             </div>
@@ -237,3 +237,4 @@ export const HeroSection: React.FC = () => {
     </section>
   );
 };
+

@@ -1,3 +1,4 @@
+import { CHANNEL_METRICS } from '../data/postsData';
 import React from 'react';
 import { X, Github, ExternalLink, Terminal, Copy, Check } from 'lucide-react';
 
@@ -48,14 +49,14 @@ export const ReadmeModal: React.FC<ReadmeModalProps> = ({ isOpen, onClose }) => 
           <div>
             <h3 className="text-base font-bold text-ink mb-1.5">Project Overview</h3>
             <p>
-              <b>Behind the Views</b> is an open-source, reproducible data science investigation analyzing 11 months of TikTok posting history (69 posts, 293,710 lifetime likes) from student video editor <a href="https://www.tiktok.com/@herox.cc?_r=1&_t=ZP-99Tn9fZhK9e" target="_blank" rel="noopener noreferrer" className="text-teal-700 dark:text-teal-400 underline">@herox.cc</a>.
+              <b>Behind the Views</b> is an open-source, reproducible data science investigation analyzing 11 months of TikTok posting history (69 posts, {CHANNEL_METRICS.totalLikes.toLocaleString()} lifetime likes) from student video editor <a href="https://www.tiktok.com/@herox.cc?_r=1&_t=ZP-99Tn9fZhK9e" target="_blank" rel="noopener noreferrer" className="text-teal-700 dark:text-teal-400 underline">@herox.cc</a>.
             </p>
           </div>
 
           <div>
             <h3 className="text-base font-bold text-ink mb-1.5">Core Goals</h3>
             <ul className="list-disc list-inside space-y-1">
-              <li><b>Demystify Social Media Reach:</b> Expose how two viral outliers accounted for 90.8% of lifetime likes.</li>
+              <li><b>Demystify Social Media Reach:</b> Expose how two viral outliers accounted for {`${CHANNEL_METRICS.top2Percentage}%`} of lifetime likes.</li>
               <li><b>Measure Cadence Dynamics:</b> Analyze the statistical impact of an extended 73-day hiatus.</li>
               <li><b>Build Predictive Models:</b> Train and evaluate machine learning classifiers (Logistic Regression, Random Forest) on early release signals.</li>
               <li><b>Analyze Audience Sentiment:</b> Use NLP and TF-IDF clustering to parse viewer questions and feedback on top viral edits.</li>
@@ -135,3 +136,4 @@ Interactive D3.js Visualizations (React + Tailwind)`}
     </div>
   );
 };
+

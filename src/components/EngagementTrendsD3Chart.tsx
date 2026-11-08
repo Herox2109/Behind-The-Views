@@ -326,10 +326,11 @@ export const EngagementTrendsD3Chart: React.FC = () => {
         <div className="mt-6 p-5 rounded-2xl clean-card-tight bg-teal-500/[0.04] border-teal-500/20">
           <p className="text-sm text-ink-soft leading-relaxed">
             <b className="text-ink">Finding — </b>
-            two posts account for 90.8% of every like this account has ever received. Set those two aside, and the "typical" post held fairly steady around 100–270 likes through 2025, then dropped to its lowest levels of the whole dataset after the break.
+            two posts account for {`${CHANNEL_METRICS.top2Percentage}%`} of every like this account has ever received. Set those two aside, and the "typical" post held fairly steady around 100–270 likes through 2025, then dropped to its lowest levels of the whole dataset after the break.
           </p>
         </div>
       </div>
     </section>
   );
 };
+
