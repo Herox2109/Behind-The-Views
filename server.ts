@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import { compileExpression, validateSimulation, MAX_SIMULATED_POSTS } from "./server/safety";
 import { createServer as createViteServer } from "vite";
 
 const RAW_POSTS = [
@@ -155,14 +156,16 @@ async function startServer() {
   });
 
   app.post("/api/simulate", (req, res) => {
-    const {
-      postingFrequencyPerWeek = 1.7,
-      baselineMedian = 145,
-      includeViralSpike = false
-    } = req.body || {};
+    let parameters: ReturnType<typeof validateSimulation>;
+    try {
+      parameters = validateSimulation(req.body);
+    } catch (error) {
+      return res.status(400).json({ error: (error as Error).message });
+    }
+    const { postingFrequencyPerWeek, baselineMedian, includeViralSpike } = parameters;
 
     const breakDays = 73;
-    const simulatedCount = Math.max(1, Math.round((breakDays / 7) * postingFrequencyPerWeek));
+    const simulatedCount = Math.min(MAX_SIMULATED_POSTS, Math.max(1, Math.round((breakDays / 7) * postingFrequencyPerWeek)));
     let simulatedLikesSum = 0;
     const syntheticPoints = [];
 
@@ -192,7 +195,7 @@ async function startServer() {
     });
   });
 
-  // Safe script sandbox evaluator for Bespoke Charts
+  // Bounded arithmetic parser for Bespoke Charts (no JavaScript execution)
   app.post("/api/bespoke-eval", (req, res) => {
     const { expression } = req.body || {};
     if (!expression || typeof expression !== "string") {
@@ -200,15 +203,13 @@ async function startServer() {
     }
 
     try {
-      // Evaluate safe mathematical transforms on RAW_POSTS
+      const evaluate = compileExpression(expression);
       const transformed = RAW_POSTS.map((p, idx) => {
         const post = { ...p, index: idx, logLikes: Math.log10(p.likes + 1) };
-        // eslint-disable-next-line no-new-func
-        const fn = new Function("post", `return (${expression});`);
         return {
           date: p.date,
           originalLikes: p.likes,
-          computedValue: Number(fn(post)) || 0
+          computedValue: evaluate(post)
         };
       });
       res.json({ success: true, count: transformed.length, data: transformed });
@@ -238,3 +239,4 @@ async function startServer() {
 }
 
 startServer();
+
