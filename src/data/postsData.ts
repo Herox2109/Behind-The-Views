@@ -1,76 +1,7 @@
 import { RawPost, PhaseDef, EnrichedPost, ChannelMetrics, PhaseStats } from '../types';
 
-export const RAW_POSTS: RawPost[] = [
-  {"date":"2025-08-11","likes":13,"plays":256,"shares":0,"comments":3,"duration":68,"isAd":false,"hashtagsCount":7,"createTime":"2025-08-11T13:35:01Z"},
-  {"date":"2025-08-23","likes":124,"plays":1446,"shares":6,"comments":2,"duration":68,"isAd":false,"hashtagsCount":5,"createTime":"2025-08-23T13:46:38Z"},
-  {"date":"2025-08-24","likes":245,"plays":1946,"shares":7,"comments":4,"duration":32,"isAd":false,"hashtagsCount":5,"createTime":"2025-08-24T08:58:27Z"},
-  {"date":"2025-08-25","likes":50,"plays":591,"shares":5,"comments":3,"duration":20,"isAd":false,"hashtagsCount":5,"createTime":"2025-08-25T11:44:12Z"},
-  {"date":"2025-08-26","likes":96200,"plays":978800,"shares":4179,"comments":1150,"duration":22,"isAd":false,"hashtagsCount":5,"createTime":"2025-08-26T10:33:50Z"},
-  {"date":"2025-08-28","likes":45,"plays":641,"shares":3,"comments":1,"duration":26,"isAd":false,"hashtagsCount":5,"createTime":"2025-08-28T08:16:25Z"},
-  {"date":"2025-08-29","likes":23,"plays":256,"shares":5,"comments":3,"duration":28,"isAd":false,"hashtagsCount":5,"createTime":"2025-08-29T10:15:39Z"},
-  {"date":"2025-08-30","likes":113,"plays":1751,"shares":10,"comments":5,"duration":24,"isAd":false,"hashtagsCount":5,"createTime":"2025-08-30T11:01:52Z"},
-  {"date":"2025-08-31","likes":104,"plays":1521,"shares":5,"comments":2,"duration":30,"isAd":false,"hashtagsCount":5,"createTime":"2025-08-31T11:19:27Z"},
-  {"date":"2025-09-01","likes":20,"plays":474,"shares":4,"comments":1,"duration":56,"isAd":false,"hashtagsCount":5,"createTime":"2025-09-01T09:45:17Z"},
-  {"date":"2025-09-02","likes":113,"plays":1437,"shares":4,"comments":3,"duration":40,"isAd":false,"hashtagsCount":5,"createTime":"2025-09-02T10:46:24Z"},
-  {"date":"2025-09-03","likes":91,"plays":1757,"shares":6,"comments":4,"duration":28,"isAd":false,"hashtagsCount":5,"createTime":"2025-09-03T11:09:08Z"},
-  {"date":"2025-09-04","likes":210,"plays":2669,"shares":11,"comments":7,"duration":23,"isAd":false,"hashtagsCount":5,"createTime":"2025-09-04T10:36:34Z"},
-  {"date":"2025-09-05","likes":158,"plays":2498,"shares":6,"comments":5,"duration":25,"isAd":false,"hashtagsCount":5,"createTime":"2025-09-05T12:07:18Z"},
-  {"date":"2025-09-06","likes":76,"plays":1483,"shares":5,"comments":5,"duration":25,"isAd":false,"hashtagsCount":5,"createTime":"2025-09-06T12:48:50Z"},
-  {"date":"2025-09-07","likes":36,"plays":854,"shares":1,"comments":4,"duration":102,"isAd":false,"hashtagsCount":0,"createTime":"2025-09-07T11:01:05Z"},
-  {"date":"2025-09-21","likes":377,"plays":4185,"shares":15,"comments":3,"duration":27,"isAd":false,"hashtagsCount":5,"createTime":"2025-09-21T09:41:38Z"},
-  {"date":"2025-09-22","likes":1310,"plays":27700,"shares":56,"comments":25,"duration":21,"isAd":false,"hashtagsCount":5,"createTime":"2025-09-22T10:13:58Z"},
-  {"date":"2025-09-23","likes":206,"plays":2044,"shares":5,"comments":3,"duration":23,"isAd":true,"hashtagsCount":5,"createTime":"2025-09-23T12:05:55Z"},
-  {"date":"2025-09-24","likes":1149,"plays":31300,"shares":73,"comments":14,"duration":30,"isAd":false,"hashtagsCount":5,"createTime":"2025-09-24T09:39:14Z"},
-  {"date":"2025-09-25","likes":543,"plays":6574,"shares":34,"comments":7,"duration":20,"isAd":false,"hashtagsCount":5,"createTime":"2025-09-25T09:37:16Z"},
-  {"date":"2025-09-26","likes":287,"plays":6188,"shares":15,"comments":8,"duration":18,"isAd":false,"hashtagsCount":5,"createTime":"2025-09-26T10:20:47Z"},
-  {"date":"2025-09-27","likes":184,"plays":2771,"shares":23,"comments":4,"duration":19,"isAd":false,"hashtagsCount":5,"createTime":"2025-09-27T11:09:40Z"},
-  {"date":"2025-09-30","likes":1119,"plays":14000,"shares":142,"comments":26,"duration":31,"isAd":false,"hashtagsCount":5,"createTime":"2025-09-30T09:08:14Z"},
-  {"date":"2025-10-01","likes":170700,"plays":1300000,"shares":28700,"comments":790,"duration":21,"isAd":false,"hashtagsCount":5,"createTime":"2025-10-01T09:36:42Z"},
-  {"date":"2025-10-02","likes":250,"plays":2864,"shares":14,"comments":3,"duration":20,"isAd":false,"hashtagsCount":5,"createTime":"2025-10-02T09:30:25Z"},
-  {"date":"2025-10-04","likes":8303,"plays":115900,"shares":2090,"comments":259,"duration":25,"isAd":false,"hashtagsCount":5,"createTime":"2025-10-04T09:49:46Z"},
-  {"date":"2025-10-06","likes":310,"plays":6564,"shares":9,"comments":3,"duration":17,"isAd":false,"hashtagsCount":5,"createTime":"2025-10-06T09:57:13Z"},
-  {"date":"2025-10-07","likes":164,"plays":1987,"shares":6,"comments":9,"duration":15,"isAd":false,"hashtagsCount":5,"createTime":"2025-10-07T09:57:18Z"},
-  {"date":"2025-10-09","likes":1815,"plays":24400,"shares":99,"comments":21,"duration":18,"isAd":false,"hashtagsCount":5,"createTime":"2025-10-09T09:45:10Z"},
-  {"date":"2025-10-13","likes":32,"plays":551,"shares":1,"comments":8,"duration":26,"isAd":false,"hashtagsCount":5,"createTime":"2025-10-13T09:44:17Z"},
-  {"date":"2025-10-16","likes":112,"plays":1816,"shares":2,"comments":2,"duration":16,"isAd":false,"hashtagsCount":5,"createTime":"2025-10-16T09:58:52Z"},
-  {"date":"2025-10-18","likes":243,"plays":3583,"shares":31,"comments":8,"duration":19,"isAd":false,"hashtagsCount":5,"createTime":"2025-10-18T09:41:30Z"},
-  {"date":"2025-10-21","likes":186,"plays":2066,"shares":9,"comments":4,"duration":20,"isAd":false,"hashtagsCount":5,"createTime":"2025-10-21T09:41:15Z"},
-  {"date":"2025-10-23","likes":175,"plays":1961,"shares":6,"comments":4,"duration":17,"isAd":false,"hashtagsCount":5,"createTime":"2025-10-23T09:54:53Z"},
-  {"date":"2025-10-25","likes":235,"plays":2224,"shares":18,"comments":3,"duration":21,"isAd":false,"hashtagsCount":5,"createTime":"2025-10-25T09:43:04Z"},
-  {"date":"2025-10-28","likes":92,"plays":1261,"shares":5,"comments":1,"duration":20,"isAd":true,"hashtagsCount":5,"createTime":"2025-10-28T09:39:40Z"},
-  {"date":"2025-10-30","likes":575,"plays":5754,"shares":61,"comments":4,"duration":34,"isAd":false,"hashtagsCount":5,"createTime":"2025-10-30T09:42:43Z"},
-  {"date":"2025-11-03","likes":80,"plays":1356,"shares":2,"comments":2,"duration":18,"isAd":true,"hashtagsCount":5,"createTime":"2025-11-03T09:48:27Z"},
-  {"date":"2025-11-04","likes":1672,"plays":25200,"shares":56,"comments":22,"duration":21,"isAd":false,"hashtagsCount":5,"createTime":"2025-11-04T09:49:25Z"},
-  {"date":"2025-11-06","likes":101,"plays":1495,"shares":2,"comments":4,"duration":29,"isAd":true,"hashtagsCount":5,"createTime":"2025-11-06T09:37:39Z"},
-  {"date":"2025-11-07","likes":149,"plays":1898,"shares":7,"comments":2,"duration":25,"isAd":false,"hashtagsCount":5,"createTime":"2025-11-07T09:40:15Z"},
-  {"date":"2025-11-09","likes":103,"plays":1566,"shares":5,"comments":2,"duration":30,"isAd":false,"hashtagsCount":5,"createTime":"2025-11-09T09:39:48Z"},
-  {"date":"2025-11-11","likes":117,"plays":1450,"shares":6,"comments":2,"duration":18,"isAd":false,"hashtagsCount":5,"createTime":"2025-11-11T09:43:38Z"},
-  {"date":"2025-11-12","likes":161,"plays":2097,"shares":7,"comments":4,"duration":17,"isAd":false,"hashtagsCount":5,"createTime":"2025-11-12T10:04:19Z"},
-  {"date":"2025-11-15","likes":108,"plays":2120,"shares":4,"comments":2,"duration":17,"isAd":false,"hashtagsCount":5,"createTime":"2025-11-15T09:38:08Z"},
-  {"date":"2025-11-20","likes":154,"plays":1649,"shares":10,"comments":0,"duration":19,"isAd":false,"hashtagsCount":5,"createTime":"2025-11-20T09:40:00Z"},
-  {"date":"2025-11-22","likes":171,"plays":2121,"shares":9,"comments":2,"duration":18,"isAd":false,"hashtagsCount":5,"createTime":"2025-11-22T09:38:49Z"},
-  {"date":"2025-11-25","likes":275,"plays":1802,"shares":30,"comments":17,"duration":38,"isAd":true,"hashtagsCount":5,"createTime":"2025-11-25T09:41:06Z"},
-  {"date":"2025-11-27","likes":141,"plays":1852,"shares":27,"comments":11,"duration":20,"isAd":false,"hashtagsCount":5,"createTime":"2025-11-27T09:42:59Z"},
-  {"date":"2025-12-01","likes":175,"plays":5747,"shares":8,"comments":2,"duration":16,"isAd":true,"hashtagsCount":5,"createTime":"2025-12-01T09:40:01Z"},
-  {"date":"2025-12-03","likes":70,"plays":1393,"shares":1,"comments":0,"duration":17,"isAd":true,"hashtagsCount":5,"createTime":"2025-12-03T09:37:31Z"},
-  {"date":"2025-12-05","likes":118,"plays":2575,"shares":7,"comments":3,"duration":15,"isAd":false,"hashtagsCount":5,"createTime":"2025-12-05T09:38:13Z"},
-  {"date":"2025-12-08","likes":94,"plays":1300,"shares":5,"comments":1,"duration":18,"isAd":true,"hashtagsCount":5,"createTime":"2025-12-08T09:39:32Z"},
-  {"date":"2025-12-10","likes":149,"plays":1963,"shares":11,"comments":24,"duration":16,"isAd":true,"hashtagsCount":5,"createTime":"2025-12-10T09:40:03Z"},
-  {"date":"2025-12-19","likes":142,"plays":1519,"shares":6,"comments":0,"duration":29,"isAd":false,"hashtagsCount":5,"createTime":"2025-12-19T09:39:02Z"},
-  {"date":"2025-12-21","likes":690,"plays":6845,"shares":56,"comments":4,"duration":17,"isAd":false,"hashtagsCount":5,"createTime":"2025-12-21T09:38:42Z"},
-  {"date":"2025-12-24","likes":152,"plays":1625,"shares":7,"comments":8,"duration":13,"isAd":false,"hashtagsCount":5,"createTime":"2025-12-24T09:39:22Z"},
-  {"date":"2025-12-30","likes":138,"plays":1410,"shares":11,"comments":8,"duration":25,"isAd":false,"hashtagsCount":5,"createTime":"2025-12-30T09:41:42Z"},
-  {"date":"2026-01-16","likes":107,"plays":1418,"shares":2,"comments":3,"duration":15,"isAd":true,"hashtagsCount":5,"createTime":"2026-01-16T09:42:47Z"},
-  {"date":"2026-01-28","likes":2118,"plays":27000,"shares":160,"comments":34,"duration":19,"isAd":false,"hashtagsCount":5,"createTime":"2026-01-28T09:40:47Z"},
-  {"date":"2026-02-03","likes":172,"plays":1956,"shares":8,"comments":6,"duration":20,"isAd":true,"hashtagsCount":5,"createTime":"2026-02-03T09:41:10Z"},
-  {"date":"2026-02-10","likes":96,"plays":1702,"shares":4,"comments":4,"duration":27,"isAd":true,"hashtagsCount":5,"createTime":"2026-02-10T09:39:52Z"},
-  {"date":"2026-02-17","likes":392,"plays":4656,"shares":43,"comments":3,"duration":23,"isAd":false,"hashtagsCount":5,"createTime":"2026-02-17T09:39:15Z"},
-  {"date":"2026-05-01","likes":83,"plays":551,"shares":4,"comments":0,"duration":23,"isAd":false,"hashtagsCount":5,"createTime":"2026-05-01T08:51:33Z"},
-  {"date":"2026-06-14","likes":33,"plays":490,"shares":2,"comments":1,"duration":16,"isAd":false,"hashtagsCount":5,"createTime":"2026-06-14T10:00:00Z"},
-  {"date":"2026-06-24","likes":46,"plays":540,"shares":3,"comments":2,"duration":18,"isAd":false,"hashtagsCount":5,"createTime":"2026-06-24T10:00:00Z"},
-  {"date":"2026-07-11","likes":39,"plays":779,"shares":5,"comments":6,"duration":13,"isAd":true,"hashtagsCount":5,"createTime":"2026-07-11T09:39:33Z"},
-  {"date":"2026-07-12","likes":77,"plays":483,"shares":7,"comments":4,"duration":9,"isAd":false,"hashtagsCount":6,"createTime":"2026-07-12T09:39:32Z"}
-];
+import posts from '../../data/posts.json';
+export const RAW_POSTS: RawPost[] = posts;
 
 export const PHASE_DEFS: PhaseDef[] = [
   {
@@ -192,7 +123,7 @@ export function calculateMedian(numbers: number[]): number {
   if (!numbers.length) return 0;
   const sorted = [...numbers].sort((a, b) => a - b);
   const mid = Math.floor(sorted.length / 2);
-  return sorted.length % 2 !== 0 ? sorted[mid] : Math.round((sorted[mid - 1] + sorted[mid]) / 2);
+  return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
 }
 
 export function calculateMean(numbers: number[]): number {
@@ -211,7 +142,7 @@ const totalSharesSum = ENRICHED_POSTS.reduce((a, p) => a + p.shares, 0);
 const totalCommentsSum = ENRICHED_POSTS.reduce((a, p) => a + p.comments, 0);
 
 export const CHANNEL_METRICS: ChannelMetrics = {
-  totalPosts: 69,
+  totalPosts: RAW_POSTS.length,
   totalLikes: totalLikesSum,
   totalPlays: totalPlaysSum,
   totalShares: totalSharesSum,
@@ -223,14 +154,17 @@ export const CHANNEL_METRICS: ChannelMetrics = {
   overallMeanLikes: calculateMean(allLikes),
   overallMedianPlays: calculateMedian(allPlays),
   overallMedianDuration: calculateMedian(allDurations),
-  top2LikesSum: 96200 + 170700, // 266,900
-  top2Percentage: Number(((266900 / totalLikesSum) * 100).toFixed(1)),
+  top2LikesSum: sortedByLikes.slice(0, 2).reduce((sum, p) => sum + p.likes, 0),
+  top2Percentage: Number(((sortedByLikes.slice(0, 2).reduce((sum, p) => sum + p.likes, 0) / totalLikesSum) * 100).toFixed(1)),
   breakDurationDays: 73,
   medianGapDays: 2,
   maxGapDays: 73,
   averageWeeklyPosts: 1.4,
-  morningPostPercentage: 70
+  morningPostPercentage: Number((100 * RAW_POSTS.filter(p => p.createTime && p.createTime.slice(11, 19) >= "09:35:00" && p.createTime.slice(11, 19) <= "10:05:00").length / RAW_POSTS.length).toFixed(1))
 };
+
+const beforePosts = RAW_POSTS.filter(p => p.date < "2026-02-18");
+const afterPosts = RAW_POSTS.filter(p => p.date >= "2026-05-01");
 
 // Before vs After Break stats
 export const BREAK_STATS = {
@@ -239,12 +173,12 @@ export const BREAK_STATS = {
   beforeEndDate: "Feb 17, 2026",
   afterStartDate: "May 01, 2026",
   afterEndDate: "Jul 12, 2026",
-  beforePostCount: 64,
-  afterPostCount: 5,
-  beforeMedianLikesExcludingViral: 145,
-  afterMedianLikes: 46,
-  beforeMedianPlays: 1852,
-  afterMedianPlays: 540,
+  beforePostCount: beforePosts.length,
+  afterPostCount: afterPosts.length,
+  beforeMedianLikesExcludingViral: calculateMedian(beforePosts.filter(p => p.likes <= 50000).map(p => p.likes)),
+  afterMedianLikes: calculateMedian(afterPosts.map(p => p.likes)),
+  beforeMedianPlays: calculateMedian(beforePosts.filter(p => p.likes <= 50000).map(p => p.plays ?? 0)),
+  afterMedianPlays: calculateMedian(afterPosts.map(p => p.plays ?? 0)),
   beforeWeeklyFreq: 1.7,
   afterWeeklyFreq: 0.5
 };
@@ -309,3 +243,4 @@ export const PHASE_STATS: PhaseStats[] = [
     endDate: endDates[idx]
   };
 });
+

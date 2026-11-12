@@ -1,3 +1,5 @@
+import { BREAK_STATS } from '../data/postsData';
+import { CHANNEL_METRICS } from '../data/postsData';
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import * as d3 from 'd3';
 import { TOP_5_POSTS, ENRICHED_POSTS, sortedByLikes } from '../data/postsData';
@@ -334,7 +336,7 @@ export const TopPostsAndContentD3: React.FC = () => {
               <span>INSIGHT 3: 2.74 MILLION TOTAL IMPRESSIONS</span>
             </div>
             <p className="text-xs text-ink-soft leading-relaxed">
-              Across all 69 uploads, the channel accumulated <b>2,735,468 total verified plays</b> and <b>294,220 total likes</b>. The top two posts alone generated <b>2,278,800 plays</b> (83.3% of total channel impressions), mathematically illustrating the power-law distribution characteristic of TikTok's recommendation engine.
+              Across all 69 uploads, the channel accumulated <b>{CHANNEL_METRICS.totalPlays.toLocaleString()} total plays</b> and <b>{CHANNEL_METRICS.totalLikes.toLocaleString()} total likes</b>. The top two posts alone generated <b>2,278,800 plays</b> (83.3% of total channel impressions), mathematically illustrating the power-law distribution characteristic of TikTok's recommendation engine.
             </p>
           </div>
 
@@ -344,7 +346,7 @@ export const TopPostsAndContentD3: React.FC = () => {
               <span>INSIGHT 4: POST-BREAK COLD-START DEPRECIATION</span>
             </div>
             <p className="text-xs text-ink-soft leading-relaxed">
-              Before the 73-day hiatus, the median non-viral video garnered <b>1,852 plays</b> and <b>145 likes</b>. After the return, median plays dropped to <b>540 plays</b> (-70.8%) and <b>46 likes</b> (-68.3%). Algorithmic cache decay severed the channel from initial FYP testing buckets, requiring full velocity rebuilding.
+              Before the 73-day hiatus, the median non-viral video garnered <b>{BREAK_STATS.beforeMedianPlays.toLocaleString()} plays</b> and <b>{BREAK_STATS.beforeMedianLikesExcludingViral} likes</b>. After the return, median plays dropped to <b>{BREAK_STATS.afterMedianPlays} plays</b> and <b>{BREAK_STATS.afterMedianLikes} likes</b>. This before/after comparison does not establish that the break caused the change.
             </p>
           </div>
         </div>
@@ -612,3 +614,4 @@ export const TopPostsAndContentD3: React.FC = () => {
     </section>
   );
 };
+
