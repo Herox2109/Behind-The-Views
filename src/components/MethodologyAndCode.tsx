@@ -55,34 +55,18 @@ print(phase_summary)`,
       explain: "Identifies natural cadence transitions by measuring inter-post gaps without arbitrary manual dates, identifying the 73-day hiatus as a natural statistical boundary."
     },
     model: {
-      fileName: 'train_model.py',
-      language: 'python',
-      code: `import numpy as np
-from sklearn.model_selection import StratifiedKFold, cross_val_score
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report, roc_auc_score
-
-# Feature Engineering
-X = pd.DataFrame({
-    "gap_days": df["gap_days"],
-    "is_morning": df["Date"].dt.hour.isin([9, 10]).astype(int),
-    "is_midweek": df["Date"].dt.dayofweek.isin([1, 2]).astype(int),
-    "is_pre_break": (df["Date"] < "2026-02-18").astype(int)
-})
-
-# Target threshold computed from the dataset
-y = (df["Likes"] >= df["Likes"].median()).astype(int)
-
-# Model: L2-Regularized Logistic Regression for small-sample stability
-model = LogisticRegression(penalty="l2", C=1.0, random_state=42)
-
-# 5-Fold Stratified Cross-Validation
-cv_scores = cross_val_score(model, X, y, cv=5, scoring="accuracy")
-print(f"5-Fold CV Accuracy: {cv_scores.mean():.3f} (+/- {cv_scores.std():.3f})")
-
-model.fit(X, y)
-print("Coefficients:", dict(zip(X.columns, model.coef_[0])))`,
-      explain: "Trains an L2-regularized logistic classifier using stratified cross-validation, ensuring the small sample size doesn't lead to overfitted predictions."
+      fileName: 'illustrative_score.js',
+      language: 'javascript',
+      code: `// Educational sketch; coefficients are manual, not learned.
+// Full implementation: src/lib/illustrativeModel.ts
+const contributions = [0.35, -0.065 * gapDays,
+  isMorning ? 0.72 : 0, isMidweek ? 0.48 : 0,
+  isPreBreak ? 1.15 : -0.95, durationEffect];
+const z = contributions.reduce((sum, value) => sum + value, 0);
+const score = 100 / (1 + Math.exp(-z));
+// This score is not a calibrated probability.
+// No training or held-out evaluation is performed.`,
+      explain: "Illustrates the live score's manual rules. No accuracy, ROC-AUC, or other evaluation result is claimed."
     },
     nlp: {
       fileName: 'nlp_sentiment.py',
@@ -145,13 +129,13 @@ st.line_chart(df.set_index("Date")["Likes"])
         {/* Header */}
         <div className="max-w-2xl mb-12">
           <div className="text-xs font-semibold text-teal-700 dark:text-teal-400 mb-2 uppercase tracking-wider font-mono">
-            Technical Rigor & Reproducibility
+            Implementation & Educational Examples
           </div>
           <h2 className="text-2xl sm:text-4xl font-bold text-ink tracking-tight mb-4">
-            Pipeline Code & Engineering Methodology
+            Implementation Notes & Example Code
           </h2>
           <p className="text-base text-ink-soft leading-relaxed">
-            The end-to-end Python pipeline used to parse raw JSON, extract timestamps, compute inter-post gaps, train the ML classifier, and analyze audience comments.
+            Educational code examples for data preparation and analysis. These snippets are not an executed end-to-end pipeline; the live score is a separately implemented, unevaluated heuristic.
           </p>
         </div>
 
